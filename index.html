@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body style="margin: 0">
+    <div id="header" style="padding: 1rem; background-color: lightblue">
+      <h1 id="main-heading" style="margin: 0">Fruit Shop</h1>
+      <input id="filter" type="text" placeholder="Search fruits..." />
+    </div>
+    <div>
+      <form>
+        <h2 id="basket-heading">Add Fruits</h2>
+        <input type="text" name="fruit" id="fruit-to-add" />
+        <input type="text" name="description" id="description-to-add" placeholder="Description" />
+        <button type="submit">Add</button>
+      </form>
+      <ul class="fruits" id="fruit-list">
+        <li class="fruit">Banana <span class="description">(Tasty Fruit)</span><button class="delete-btn">x</button></li>
+        <li class="fruit">Apple <span class="description">(Crunchy and Juicy)</span><button class="delete-btn">x</button></li>
+        <li class="fruit">Orange <span class="description">(Citrusy Goodness)</span><button class="delete-btn">x</button></li>
+        <li class="fruit">Kiwi <span class="description">(Green and Tart)</span><button class="delete-btn">x</button></li>
+      </ul>
+    </div>
+    <div id="thanks"></div>
+    <script src="index.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.querySelector('form');
+        const fruitList = document.getElementById('fruit-list');
+        const filterInput = document.getElementById('filter');
+
+        form.addEventListener('submit', function (event) {
+          event.preventDefault();
+
+          // Get values from input fields
+          const fruitName = document.getElementById('fruit-to-add').value;
+          const description = document.getElementById('description-to-add').value;
+
+          // Create new list item
+          const newListItem = document.createElement('li');
+          newListItem.classList.add('fruit');
+
+          // Create description span
+          const descriptionSpan = document.createElement('span');
+          descriptionSpan.classList.add('description');
+          descriptionSpan.innerHTML = `(${description})`;
+
+          // Add fruit name and description to the list item
+          newListItem.textContent = fruitName;
+          newListItem.appendChild(descriptionSpan);
+
+          // Create delete button
+          const deleteButton = document.createElement('button');
+          deleteButton.classList.add('delete-btn');
+          deleteButton.textContent = 'x';
+
+          // Append delete button to the list item
+          newListItem.appendChild(deleteButton);
+
+          // Append the new list item to the fruit list
+          fruitList.appendChild(newListItem);
+
+          // Clear input fields
+          document.getElementById('fruit-to-add').value = '';
+          document.getElementById('description-to-add').value = '';
+        });
+
+        filterInput.addEventListener('input', function () {
+          const filterText = filterInput.value.toLowerCase();
+          const fruitItems = document.querySelectorAll('.fruits .fruit');
+
+          fruitItems.forEach(function (item) {
+            const fruitName = item.textContent.toLowerCase();
+            const description = item.querySelector('.description');
+
+            if (fruitName.includes(filterText) || (description && description.textContent.toLowerCase().includes(filterText))) {
+              item.style.display = 'block';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
